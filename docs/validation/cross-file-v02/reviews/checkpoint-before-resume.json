@@ -1,0 +1,157 @@
+{
+  "schema_version": "0.2.0",
+  "session_id": "review-cross-file-v02",
+  "skill": "cwe-476-null-pointer",
+  "status": "running",
+  "scenarios": [
+    {
+      "id": "s1",
+      "unit_id": "u-unsafe",
+      "pointer": "p",
+      "sink": {
+        "path": "consumers.cpp",
+        "start_line": 4,
+        "end_line": 4
+      },
+      "state": "expanding",
+      "evidence": [
+        {
+          "query_id": "q08",
+          "fact_id": "sink-4",
+          "role": "dereference"
+        }
+      ],
+      "summary": "Need to connect the lookup's return conditions and caller writes/guards to this sink.",
+      "missing": [
+        "Interpret the exact lookup return path and the same pointer value at the sink."
+      ],
+      "next_queries": [
+        {
+          "schema_version": "0.2.0",
+          "id": "q01",
+          "operation": "find_definition",
+          "scope": {
+            "paths": [],
+            "symbol": "review_lookup"
+          },
+          "purpose": "Locate the actual return implementation, not merely a declaration.",
+          "limit": 1000
+        }
+      ],
+      "finding_id": null
+    },
+    {
+      "id": "s2",
+      "unit_id": "u-guarded",
+      "pointer": "p",
+      "sink": {
+        "path": "consumers.cpp",
+        "start_line": 9,
+        "end_line": 9
+      },
+      "state": "expanding",
+      "evidence": [
+        {
+          "query_id": "q08",
+          "fact_id": "sink-9",
+          "role": "dereference"
+        }
+      ],
+      "summary": "Need to connect the lookup's return conditions and caller writes/guards to this sink.",
+      "missing": [
+        "Interpret the exact lookup return path and the same pointer value at the sink."
+      ],
+      "next_queries": [
+        {
+          "schema_version": "0.2.0",
+          "id": "q01",
+          "operation": "find_definition",
+          "scope": {
+            "paths": [],
+            "symbol": "review_lookup"
+          },
+          "purpose": "Locate the actual return implementation, not merely a declaration.",
+          "limit": 1000
+        }
+      ],
+      "finding_id": null
+    },
+    {
+      "id": "s3",
+      "unit_id": "u-wrong-guard",
+      "pointer": "p",
+      "sink": {
+        "path": "consumers.cpp",
+        "start_line": 16,
+        "end_line": 16
+      },
+      "state": "expanding",
+      "evidence": [
+        {
+          "query_id": "q08",
+          "fact_id": "sink-16",
+          "role": "dereference"
+        }
+      ],
+      "summary": "Need to connect the lookup's return conditions and caller writes/guards to this sink.",
+      "missing": [
+        "Interpret the exact lookup return path and the same pointer value at the sink."
+      ],
+      "next_queries": [
+        {
+          "schema_version": "0.2.0",
+          "id": "q01",
+          "operation": "find_definition",
+          "scope": {
+            "paths": [],
+            "symbol": "review_lookup"
+          },
+          "purpose": "Locate the actual return implementation, not merely a declaration.",
+          "limit": 1000
+        }
+      ],
+      "finding_id": null
+    },
+    {
+      "id": "s4",
+      "unit_id": "u-reassigned",
+      "pointer": "p",
+      "sink": {
+        "path": "consumers.cpp",
+        "start_line": 22,
+        "end_line": 22
+      },
+      "state": "expanding",
+      "evidence": [
+        {
+          "query_id": "q08",
+          "fact_id": "sink-22",
+          "role": "dereference"
+        }
+      ],
+      "summary": "Need to connect the lookup's return conditions and caller writes/guards to this sink.",
+      "missing": [
+        "Interpret the exact lookup return path and the same pointer value at the sink."
+      ],
+      "next_queries": [
+        {
+          "schema_version": "0.2.0",
+          "id": "q01",
+          "operation": "find_definition",
+          "scope": {
+            "paths": [],
+            "symbol": "review_lookup"
+          },
+          "purpose": "Locate the actual return implementation, not merely a declaration.",
+          "limit": 1000
+        }
+      ],
+      "finding_id": null
+    }
+  ],
+  "findings": [],
+  "query_refs": [
+    "q08"
+  ],
+  "errors": []
+}

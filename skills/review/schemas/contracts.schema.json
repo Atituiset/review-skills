@@ -1,0 +1,1489 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://review-skills.local/schemas/0.2.0/contracts.schema.json",
+  "$defs": {
+    "location": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "end_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "path",
+        "start_line",
+        "end_line"
+      ],
+      "additionalProperties": false
+    },
+    "dependency": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "snapshot_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "snapshot_path"
+      ],
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "enum": [
+            "unsupported",
+            "tool_failure",
+            "stale_index",
+            "ambiguous_symbol",
+            "truncated",
+            "missing_dependency",
+            "invalid_output",
+            "validation_failure",
+            "budget_exhausted"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "type": {
+          "enum": [
+            "file",
+            "function",
+            "diff",
+            "directory"
+          ]
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "function": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base": {
+          "type": "string",
+          "minLength": 1
+        },
+        "head": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "schema_version",
+        "type",
+        "repository",
+        "paths"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "function"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "function"
+            ],
+            "properties": {
+              "paths": {
+                "minItems": 1,
+                "maxItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "file"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "paths": {
+                "minItems": 1,
+                "maxItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "diff"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "base",
+              "head"
+            ]
+          }
+        }
+      ]
+    },
+    "unit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "function",
+            "file"
+          ]
+        },
+        "location": {
+          "$ref": "#/$defs/location"
+        },
+        "changed_ranges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start_line": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "end_line": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "start_line",
+              "end_line"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "reviewed",
+            "partial",
+            "skipped"
+          ]
+        },
+        "context_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "location",
+        "changed_ranges",
+        "status",
+        "context_ref"
+      ],
+      "additionalProperties": false
+    },
+    "units": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unit"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "units"
+      ],
+      "additionalProperties": false
+    },
+    "session": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updated_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "created",
+            "running",
+            "completed",
+            "partial",
+            "failed"
+          ]
+        },
+        "target_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "baseline": {
+          "type": "object",
+          "properties": {
+            "commit": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "dirty": {
+              "type": "boolean"
+            },
+            "source_mode": {
+              "enum": [
+                "git-worktree",
+                "git-snapshot",
+                "live-hashed",
+                "filesystem-snapshot"
+              ]
+            },
+            "repository_view": {
+              "type": "string",
+              "minLength": 1
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "commit",
+            "dirty",
+            "source_mode",
+            "repository_view",
+            "scope"
+          ],
+          "additionalProperties": false
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "available",
+                  "unavailable",
+                  "degraded"
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "version",
+              "status"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "agent-inspection",
+                "external-validator"
+              ]
+            },
+            "details": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "mode",
+            "details"
+          ],
+          "additionalProperties": false
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/error"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "created_at",
+        "updated_at",
+        "status",
+        "target_ref",
+        "baseline",
+        "capabilities",
+        "validation",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "stage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "enum": [
+            "pre-process",
+            "preload",
+            "dispatch",
+            "review-execute",
+            "post-process"
+          ]
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "running",
+            "completed",
+            "partial",
+            "failed",
+            "skipped"
+          ]
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "started_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "finished_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/error"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "status",
+        "attempt",
+        "started_at",
+        "finished_at",
+        "inputs",
+        "outputs",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "pipeline": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stage"
+          },
+          "minItems": 5,
+          "maxItems": 5
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "stages"
+      ],
+      "additionalProperties": false
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "file",
+            "function"
+          ]
+        },
+        "location": {
+          "$ref": "#/$defs/location"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dependency"
+          }
+        },
+        "macros": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "globals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "typedefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "query_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "kind",
+        "location",
+        "dependencies",
+        "macros",
+        "globals",
+        "typedefs",
+        "query_refs",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "request": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "enum": [
+            "find_definition",
+            "find_references",
+            "find_callers",
+            "find_callees",
+            "find_assignments",
+            "find_pattern",
+            "find_related_symbols"
+          ]
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "paths": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1
+            },
+            "within": {
+              "$ref": "#/$defs/location"
+            }
+          },
+          "required": [
+            "paths"
+          ],
+          "additionalProperties": false
+        },
+        "pattern": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "literal",
+                "dereference",
+                "null_guard",
+                "return",
+                "assignment",
+                "call"
+              ]
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "literal"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "operation",
+        "scope",
+        "limit",
+        "purpose"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "find_pattern"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "pattern"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "enum": [
+                  "find_definition",
+                  "find_references",
+                  "find_callers",
+                  "find_callees",
+                  "find_assignments",
+                  "find_related_symbols"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "scope": {
+                "required": [
+                  "symbol"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "find_assignments"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "scope": {
+                "required": [
+                  "within"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "fact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "definition",
+            "reference",
+            "call",
+            "assignment",
+            "return",
+            "guard",
+            "dereference",
+            "declaration",
+            "source"
+          ]
+        },
+        "location": {
+          "$ref": "#/$defs/location"
+        },
+        "content": {
+          "type": "string"
+        },
+        "precision": {
+          "enum": [
+            "exact-source",
+            "syntax-observation",
+            "text-candidate",
+            "ambiguous"
+          ]
+        },
+        "related_locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/location"
+          }
+        },
+        "raw_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "location",
+        "content",
+        "precision",
+        "raw_ref"
+      ],
+      "additionalProperties": false
+    },
+    "query": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "request": {
+          "$ref": "#/$defs/request"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "partial",
+            "unsupported",
+            "error"
+          ]
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fact"
+          }
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "type": "string",
+              "minLength": 1
+            },
+            "exhaustive": {
+              "type": "boolean"
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "scope",
+            "exhaustive",
+            "limitations"
+          ],
+          "additionalProperties": false
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dependency"
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "backend": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tool_version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "created_at": {
+              "type": "string",
+              "minLength": 1
+            },
+            "raw_refs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "method": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "backend",
+            "tool_version",
+            "created_at",
+            "raw_refs",
+            "method"
+          ],
+          "additionalProperties": false
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/error"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "request",
+        "status",
+        "facts",
+        "truncated",
+        "coverage",
+        "dependencies",
+        "provenance",
+        "errors"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "unsupported",
+                  "error"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "facts": {
+                "maxItems": 0
+              },
+              "errors": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "truncated": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "partial"
+              },
+              "errors": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "query_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "origin",
+            "assignment",
+            "callee_behavior",
+            "callsite",
+            "dereference",
+            "guard",
+            "control_flow",
+            "contract"
+          ]
+        }
+      },
+      "required": [
+        "query_id",
+        "fact_id",
+        "role"
+      ],
+      "additionalProperties": false
+    },
+    "finding": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "location": {
+          "$ref": "#/$defs/location"
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 3
+        },
+        "reasoning_summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suggestion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "context_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "rule_id",
+        "title",
+        "severity",
+        "confidence",
+        "location",
+        "claim",
+        "evidence",
+        "reasoning_summary",
+        "suggestion",
+        "context_refs"
+      ],
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "unit_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "skills": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "skill": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "signals": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/evidence"
+                      }
+                    }
+                  },
+                  "required": [
+                    "skill",
+                    "reason",
+                    "signals"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "unit_id",
+              "skills"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "units"
+      ],
+      "additionalProperties": false
+    },
+    "scenario": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pointer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sink": {
+          "$ref": "#/$defs/location"
+        },
+        "state": {
+          "enum": [
+            "pending",
+            "expanding",
+            "confirmed",
+            "excluded",
+            "unresolved"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "next_queries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/request"
+          }
+        },
+        "finding_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "unit_id",
+        "pointer",
+        "sink",
+        "state",
+        "evidence",
+        "summary",
+        "missing",
+        "next_queries",
+        "finding_id"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "confirmed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "finding_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "missing": {
+                "maxItems": 0
+              },
+              "next_queries": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "unresolved"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "missing": {
+                "minItems": 1
+              },
+              "finding_id": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "excluded"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "finding_id": {
+                "type": "null"
+              },
+              "missing": {
+                "maxItems": 0
+              },
+              "next_queries": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "unitRuleResult": {
+      "type": "object",
+      "properties": {
+        "unit_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["pending", "running", "completed", "partial", "failed"]},
+        "scenario_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/error"}}
+      },
+      "required": ["unit_id", "status", "scenario_ids", "errors"],
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "running",
+            "completed",
+            "partial",
+            "failed"
+          ]
+        },
+        "unit_results": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/unitRuleResult"}
+        },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/scenario"
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/finding"
+          }
+        },
+        "query_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/error"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "skill",
+        "status",
+        "scenarios",
+        "findings",
+        "query_refs",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "report": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.2.0"
+        },
+        "session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial",
+            "failed"
+          ]
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "target_ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "partial_units": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "unavailable_rules": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "reviewed_units": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "skipped_units": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "scenario_counts": {
+              "type": "object",
+              "properties": {
+                "confirmed": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "excluded": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "unresolved": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "confirmed",
+                "excluded",
+                "unresolved"
+              ],
+              "additionalProperties": false
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "target_ref",
+            "reviewed_units",
+            "skipped_units",
+            "scenario_counts",
+            "limitations"
+          ],
+          "additionalProperties": false
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/finding"
+          }
+        },
+        "review_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/error"
+          }
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "agent-inspection",
+                "external-validator"
+              ]
+            },
+            "checks": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "mode",
+            "checks",
+            "limitations"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "status",
+        "coverage",
+        "findings",
+        "review_refs",
+        "errors",
+        "validation"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

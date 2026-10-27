@@ -1,0 +1,47 @@
+{
+  "schema_version": "0.2.0",
+  "id": "f4",
+  "rule_id": "CWE-476",
+  "title": "Reassignment invalidates the earlier null check",
+  "severity": "high",
+  "confidence": 0.99,
+  "location": {
+    "path": "consumers.cpp",
+    "start_line": 22,
+    "end_line": 22
+  },
+  "claim": "Reassignment invalidates the earlier null check: available=true reaches a null dereference after the second lookup.",
+  "evidence": [
+    {
+      "query_id": "q01",
+      "fact_id": "lookup-body",
+      "role": "callee_behavior"
+    },
+    {
+      "query_id": "q02",
+      "fact_id": "caller-reassigned",
+      "role": "assignment"
+    },
+    {
+      "query_id": "q02",
+      "fact_id": "caller-reassigned",
+      "role": "control_flow"
+    },
+    {
+      "query_id": "q06",
+      "fact_id": "guard-20",
+      "role": "guard"
+    },
+    {
+      "query_id": "q08",
+      "fact_id": "sink-22",
+      "role": "dereference"
+    }
+  ],
+  "reasoning_summary": "With available=true the first lookup passes the guard. The subsequent review_lookup(false) unconditionally returns nullptr and overwrites p before p->value.",
+  "suggestion": "Validate the new lookup result after reassignment, or avoid overwriting the checked pointer.",
+  "context_refs": [
+    "context/functions/u-reassigned.json",
+    "context/queries/q01.json"
+  ]
+}

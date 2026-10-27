@@ -1,0 +1,42 @@
+{
+  "schema_version": "0.2.0",
+  "id": "f3",
+  "rule_id": "CWE-476",
+  "title": "Guard checks a different pointer",
+  "severity": "high",
+  "confidence": 0.99,
+  "location": {
+    "path": "consumers.cpp",
+    "start_line": 16,
+    "end_line": 16
+  },
+  "claim": "Guard checks a different pointer: available=false reaches p->value with p equal to nullptr.",
+  "evidence": [
+    {
+      "query_id": "q01",
+      "fact_id": "lookup-body",
+      "role": "callee_behavior"
+    },
+    {
+      "query_id": "q02",
+      "fact_id": "caller-wrong-guard",
+      "role": "control_flow"
+    },
+    {
+      "query_id": "q06",
+      "fact_id": "guard-15",
+      "role": "guard"
+    },
+    {
+      "query_id": "q08",
+      "fact_id": "sink-16",
+      "role": "dereference"
+    }
+  ],
+  "reasoning_summary": "available=false makes p null. q points to the distinct local object other, so if (!q) does not return and does not validate p; p->value remains reachable.",
+  "suggestion": "Check p before accessing its value; checking q does not constrain p.",
+  "context_refs": [
+    "context/functions/u-wrong-guard.json",
+    "context/queries/q01.json"
+  ]
+}

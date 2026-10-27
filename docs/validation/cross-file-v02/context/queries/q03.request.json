@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q03",
+  "operation": "find_callees",
+  "scope": {
+    "paths": [
+      "consumers.cpp"
+    ],
+    "symbol": "review_unsafe",
+    "within": {
+      "path": "consumers.cpp",
+      "start_line": 2,
+      "end_line": 5,
+      "symbol": "review_unsafe"
+    }
+  },
+  "purpose": "Confirm the candidate callee reached by review_unsafe.",
+  "limit": 1000
+}

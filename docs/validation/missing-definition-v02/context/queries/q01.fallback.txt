@@ -1,0 +1,2 @@
+/tmp/review-v02-validation/missing/repository-view/consumer.cpp:2:extern ExternalObject* external_lookup();
+/tmp/review-v02-validation/missing/repository-view/consumer.cpp:4:    ExternalObject* p = external_lookup();

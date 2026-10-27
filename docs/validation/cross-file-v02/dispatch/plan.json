@@ -1,0 +1,70 @@
+{
+  "schema_version": "0.2.0",
+  "session_id": "review-cross-file-v02",
+  "units": [
+    {
+      "unit_id": "u-unsafe",
+      "skills": [
+        {
+          "skill": "cwe-476-null-pointer",
+          "reason": "p->value uses a pointer initialized from a separately defined lookup.",
+          "signals": [
+            {
+              "query_id": "q08",
+              "fact_id": "sink-4",
+              "role": "dereference"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit_id": "u-guarded",
+      "skills": [
+        {
+          "skill": "cwe-476-null-pointer",
+          "reason": "p->value uses a pointer initialized from a separately defined lookup.",
+          "signals": [
+            {
+              "query_id": "q08",
+              "fact_id": "sink-9",
+              "role": "dereference"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit_id": "u-wrong-guard",
+      "skills": [
+        {
+          "skill": "cwe-476-null-pointer",
+          "reason": "p->value uses a pointer initialized from a separately defined lookup.",
+          "signals": [
+            {
+              "query_id": "q08",
+              "fact_id": "sink-16",
+              "role": "dereference"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit_id": "u-reassigned",
+      "skills": [
+        {
+          "skill": "cwe-476-null-pointer",
+          "reason": "p->value uses a pointer initialized from a separately defined lookup.",
+          "signals": [
+            {
+              "query_id": "q08",
+              "fact_id": "sink-22",
+              "role": "dereference"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

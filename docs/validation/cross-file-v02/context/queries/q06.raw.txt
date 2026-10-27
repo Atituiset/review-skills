@@ -1,0 +1,23 @@
+     1	#include "provider.h"
+     2	int review_unsafe(bool available) {
+     3	    ReviewObject* p = review_lookup(available);
+     4	    return p->value;
+     5	}
+     6	int review_guarded(bool available) {
+     7	    ReviewObject* p = review_lookup(available);
+     8	    if (!p) return 0;
+     9	    return p->value;
+    10	}
+    11	int review_wrong_guard(bool available) {
+    12	    ReviewObject other{3};
+    13	    ReviewObject* p = review_lookup(available);
+    14	    ReviewObject* q = &other;
+    15	    if (!q) return 0;
+    16	    return p->value;
+    17	}
+    18	int review_reassigned(bool available) {
+    19	    ReviewObject* p = review_lookup(available);
+    20	    if (!p) return 0;
+    21	    p = review_lookup(false);
+    22	    return p->value;
+    23	}

@@ -1,0 +1,29 @@
+{
+  "symbol": "review_lookup",
+  "callers": [
+    {
+      "name": "review_unsafe",
+      "kind": "function",
+      "filePath": "consumers.cpp",
+      "startLine": 2
+    },
+    {
+      "name": "review_guarded",
+      "kind": "function",
+      "filePath": "consumers.cpp",
+      "startLine": 6
+    },
+    {
+      "name": "review_wrong_guard",
+      "kind": "function",
+      "filePath": "consumers.cpp",
+      "startLine": 11
+    },
+    {
+      "name": "review_reassigned",
+      "kind": "function",
+      "filePath": "consumers.cpp",
+      "startLine": 18
+    }
+  ]
+}

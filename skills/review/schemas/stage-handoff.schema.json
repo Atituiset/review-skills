@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "stage-agent/1"
+    },
+    "stage": {
+      "enum": [
+        "pre-process",
+        "preload",
+        "dispatch",
+        "review-execute",
+        "post-process"
+      ]
+    },
+    "invocation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "const": "stage-subagent"
+        },
+        "host_agent_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "role",
+        "host_agent_id"
+      ]
+    },
+    "session_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "partial",
+        "failed",
+        "needs_input",
+        "skipped"
+      ]
+    },
+    "can_continue": {
+      "type": "boolean"
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2400
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "question": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "recommended_next": {
+      "enum": [
+        "pre-process",
+        "preload",
+        "dispatch",
+        "review-execute",
+        "post-process",
+        null
+      ]
+    }
+  },
+  "required": [
+    "protocol",
+    "stage",
+    "invocation_id",
+    "execution",
+    "session_path",
+    "status",
+    "can_continue",
+    "outputs",
+    "summary",
+    "errors",
+    "question",
+    "recommended_next"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "needs_input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "minLength": 1
+          },
+          "can_continue": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "completed",
+              "partial",
+              "skipped"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "session_path": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Review baseline metadata",
+  "type": "object",
+  "required": ["protocol", "session_id", "repository", "commit", "source_mode", "repository_view", "lease_path", "index", "exclusions"],
+  "properties": {
+    "protocol": {"const": "worktree-baseline/1"},
+    "session_id": {"type": "string", "minLength": 1},
+    "repository": {"type": "string", "minLength": 1},
+    "commit": {"type": ["string", "null"]},
+    "source_mode": {"enum": ["git-worktree", "live-hashed"]},
+    "repository_view": {"type": "string", "minLength": 1},
+    "lease_path": {"type": ["string", "null"]},
+    "execution_manifest": {"type": "string", "minLength": 1},
+    "requested_rules": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "rule_selection": {"enum": ["explicit", "all-installed"]},
+    "index": {
+      "type": "object",
+      "required": ["status", "project", "tool_version", "configuration", "verified_at"],
+      "properties": {
+        "status": {"enum": ["verified", "unavailable", "stale"]},
+        "project": {"type": "string", "minLength": 1},
+        "tool_version": {"type": ["string", "null"]},
+        "configuration": {"type": "string"},
+        "verified_at": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "exclusions": {"type": "array", "items": {"type": "string"}}
+  },
+  "allOf": [{"if": {"properties": {"source_mode": {"const": "git-worktree"}}}, "then": {"properties": {"commit": {"type": "string", "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$"}, "lease_path": {"type": "string", "minLength": 1}}}}],
+  "additionalProperties": false
+}

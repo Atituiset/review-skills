@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q05",
+  "operation": "find_references",
+  "scope": {
+    "paths": [],
+    "symbol": "review_lookup"
+  },
+  "purpose": "Supplement incoming graph edges with all literal identifier references in the fixture source.",
+  "limit": 1000
+}

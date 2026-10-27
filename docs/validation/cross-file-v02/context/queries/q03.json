@@ -1,0 +1,74 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q03",
+  "request": {
+    "schema_version": "0.2.0",
+    "id": "q03",
+    "operation": "find_callees",
+    "scope": {
+      "paths": [
+        "consumers.cpp"
+      ],
+      "symbol": "review_unsafe",
+      "within": {
+        "path": "consumers.cpp",
+        "start_line": 2,
+        "end_line": 5,
+        "symbol": "review_unsafe"
+      }
+    },
+    "purpose": "Confirm the candidate callee reached by review_unsafe.",
+    "limit": 1000
+  },
+  "status": "complete",
+  "facts": [
+    {
+      "id": "lookup-call",
+      "kind": "call",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 3,
+        "end_line": 3,
+        "symbol": "review_unsafe"
+      },
+      "content": "    ReviewObject* p = review_lookup(available);",
+      "precision": "exact-source",
+      "raw_ref": "context/queries/q04.raw.txt"
+    }
+  ],
+  "truncated": false,
+  "coverage": {
+    "scope": "Complete three-file fixture view; exact inspected source, best-effort symbol relationships.",
+    "exhaustive": false,
+    "limitations": [
+      "Tree-sitter and source inspection do not establish general C++ dataflow completeness."
+    ]
+  },
+  "dependencies": [
+    {
+      "path": "consumers.cpp",
+      "sha256": "5f8a34e2ffef07d1a9b305a711d6716870e984efbab5fdfe7223a85f8e30a3b9",
+      "snapshot_path": "repository-view/consumers.cpp"
+    },
+    {
+      "path": "provider.cpp",
+      "sha256": "dc548751653186ca76d519632f4e5a77995fed642a96bef69c53309ac564fa4d",
+      "snapshot_path": "repository-view/provider.cpp"
+    },
+    {
+      "path": "provider.h",
+      "sha256": "417788a0597f574897d68ced2e9b15acdb0f6c485e09bb7a34a7ad98b191ed77",
+      "snapshot_path": "repository-view/provider.h"
+    }
+  ],
+  "provenance": {
+    "backend": "codegraph + source inspection",
+    "tool_version": "1.6.0",
+    "created_at": "2026-09-14T15:07:24Z",
+    "raw_refs": [
+      "context/queries/q03.raw.json"
+    ],
+    "method": "Host agent inspected previously captured raw tool output and exact snapshot source; no adapter program."
+  },
+  "errors": []
+}

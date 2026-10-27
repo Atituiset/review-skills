@@ -1,0 +1,7 @@
+/tmp/review-v02-validation/fixture/repository-view/consumers.cpp:3:    ReviewObject* p = review_lookup(available);
+/tmp/review-v02-validation/fixture/repository-view/consumers.cpp:7:    ReviewObject* p = review_lookup(available);
+/tmp/review-v02-validation/fixture/repository-view/consumers.cpp:13:    ReviewObject* p = review_lookup(available);
+/tmp/review-v02-validation/fixture/repository-view/consumers.cpp:19:    ReviewObject* p = review_lookup(available);
+/tmp/review-v02-validation/fixture/repository-view/consumers.cpp:21:    p = review_lookup(false);
+/tmp/review-v02-validation/fixture/repository-view/provider.h:3:ReviewObject* review_lookup(bool available);
+/tmp/review-v02-validation/fixture/repository-view/provider.cpp:2:ReviewObject* review_lookup(bool available) {

@@ -1,0 +1,42 @@
+{
+  "schema_version": "0.2.0",
+  "id": "f1",
+  "rule_id": "CWE-476",
+  "title": "Dereference of a nullable lookup result",
+  "severity": "high",
+  "confidence": 0.99,
+  "location": {
+    "path": "consumers.cpp",
+    "start_line": 4,
+    "end_line": 4
+  },
+  "claim": "Dereference of a nullable lookup result: available=false reaches p->value with p equal to nullptr.",
+  "evidence": [
+    {
+      "query_id": "q01",
+      "fact_id": "lookup-body",
+      "role": "callee_behavior"
+    },
+    {
+      "query_id": "q04",
+      "fact_id": "init-p",
+      "role": "assignment"
+    },
+    {
+      "query_id": "q02",
+      "fact_id": "caller-unsafe",
+      "role": "control_flow"
+    },
+    {
+      "query_id": "q08",
+      "fact_id": "sink-4",
+      "role": "dereference"
+    }
+  ],
+  "reasoning_summary": "available=false is passed unchanged to review_lookup, whose false branch returns nullptr. The same p is dereferenced on the next statement with no intervening guard or write.",
+  "suggestion": "Check p immediately after lookup or return a non-null result with a documented invariant.",
+  "context_refs": [
+    "context/functions/u-unsafe.json",
+    "context/queries/q01.json"
+  ]
+}

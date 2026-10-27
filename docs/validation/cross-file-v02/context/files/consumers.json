@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.2.0",
+  "id": "file-consumers",
+  "kind": "file",
+  "location": {
+    "path": "consumers.cpp",
+    "start_line": 1,
+    "end_line": 23
+  },
+  "dependencies": [
+    {
+      "path": "consumers.cpp",
+      "sha256": "5f8a34e2ffef07d1a9b305a711d6716870e984efbab5fdfe7223a85f8e30a3b9",
+      "snapshot_path": "repository-view/consumers.cpp"
+    },
+    {
+      "path": "provider.cpp",
+      "sha256": "dc548751653186ca76d519632f4e5a77995fed642a96bef69c53309ac564fa4d",
+      "snapshot_path": "repository-view/provider.cpp"
+    },
+    {
+      "path": "provider.h",
+      "sha256": "417788a0597f574897d68ced2e9b15acdb0f6c485e09bb7a34a7ad98b191ed77",
+      "snapshot_path": "repository-view/provider.h"
+    }
+  ],
+  "macros": [],
+  "globals": [],
+  "typedefs": [],
+  "query_refs": [
+    "q07",
+    "q08"
+  ],
+  "notes": [
+    "All target functions include provider.h; pointee struct and prototype captured. No user macros, globals or aliases declared in consumers.cpp."
+  ]
+}

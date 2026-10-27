@@ -1,0 +1,23 @@
+{"timestamp":"2026-09-14T15:05:26Z","event":"stage_completed","stage":"pre-process","details":"Created complete three-file view; preserved raw backend probes for subsequent semantic normalization."}
+{"timestamp":"2026-09-14T15:07:24Z","event":"query_completed","query_id":"q01","status":"complete","cache_hit":false}
+{"timestamp":"2026-09-14T15:07:24Z","event":"query_completed","query_id":"q02","status":"complete","cache_hit":false}
+{"timestamp":"2026-09-14T15:07:24Z","event":"query_completed","query_id":"q03","status":"complete","cache_hit":false}
+{"timestamp":"2026-09-14T15:07:24Z","event":"query_completed","query_id":"q04","status":"complete","cache_hit":false}
+{"timestamp":"2026-09-14T15:07:24Z","event":"query_completed","query_id":"q05","status":"complete","cache_hit":false}
+{"timestamp":"2026-09-14T15:07:24Z","event":"query_completed","query_id":"q06","status":"complete","cache_hit":false}
+{"timestamp":"2026-09-14T15:07:24Z","event":"query_completed","query_id":"q07","status":"complete","cache_hit":false}
+{"timestamp":"2026-09-14T15:07:24Z","event":"query_completed","query_id":"q08","status":"complete","cache_hit":false}
+{"timestamp":"2026-09-14T15:07:24Z","event":"stage_completed","stage":"preload"}
+{"timestamp":"2026-09-14T15:07:24Z","event":"stage_completed","stage":"dispatch"}
+{"timestamp":"2026-09-14T15:07:24Z","event":"checkpoint_saved","stage":"review-execute","details":"Intentional resume exercise: stored expanding scenarios and next query before reasoning is finalized."}
+{"timestamp":"2026-09-14T15:08:40Z","event":"resumed","stage":"review-execute","details":"Reread saved scenario checkpoint and q01; all three file hashes still match."}
+{"timestamp":"2026-09-14T15:08:40Z","event":"query_reused","query_id":"q01","cache_hit":true,"details":"Exact request, same fixture view and unchanged dependency hashes. Manual Skill-directed reuse."}
+{"timestamp":"2026-09-14T15:08:40Z","event":"scenario_decided","scenario_id":"s1","state":"confirmed","finding_id":"f1"}
+{"timestamp":"2026-09-14T15:08:40Z","event":"scenario_decided","scenario_id":"s2","state":"excluded","finding_id":null}
+{"timestamp":"2026-09-14T15:08:40Z","event":"scenario_decided","scenario_id":"s3","state":"confirmed","finding_id":"f3"}
+{"timestamp":"2026-09-14T15:08:40Z","event":"scenario_decided","scenario_id":"s4","state":"confirmed","finding_id":"f4"}
+{"timestamp":"2026-09-14T15:08:40Z","event":"stage_completed","stage":"review-execute"}
+{"timestamp":"2026-09-14T15:11:54Z","event":"stage_completed","stage":"post-process","details":"Kept three distinct accepted findings; correct-guard scenario excluded."}
+{"timestamp":"2026-09-14T15:11:54Z","event":"report_published","output":"output/findings.json","status":"completed"}
+{"timestamp":"2026-09-14T15:18:31Z","event":"sarif_adapter_exercised","stage":"post-process","output":"output/review.sarif","details":"Three accepted findings mapped; agent inspection, no full SARIF schema validator."}
+{"timestamp":"2026-09-14T15:18:31Z","event":"cache_reuse_rejected","query_id":"q01","details":"Separate changed-callee view has provider hash 3277bf3c6b1f36476f5161f7f7f3a3ba0049751f7ce411f094bdf6f12e7c3dab; caller hash unchanged. Original session remains immutable."}

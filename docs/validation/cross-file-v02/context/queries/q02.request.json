@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q02",
+  "operation": "find_callers",
+  "scope": {
+    "paths": [],
+    "symbol": "review_lookup"
+  },
+  "purpose": "Identify callers and retain complete caller source to examine argument mapping and later use.",
+  "limit": 1000
+}

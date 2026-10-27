@@ -1,0 +1,88 @@
+{
+  "schema_version": "0.2.0",
+  "session_id": "review-cross-file-v02",
+  "stages": [
+    {
+      "name": "pre-process",
+      "status": "completed",
+      "attempt": 1,
+      "started_at": "2026-09-14T15:05:26Z",
+      "finished_at": "2026-09-14T15:05:26Z",
+      "inputs": [
+        "user request",
+        "repository-view/"
+      ],
+      "outputs": [
+        "session.json",
+        "target.json",
+        "units.json"
+      ],
+      "errors": []
+    },
+    {
+      "name": "preload",
+      "status": "completed",
+      "attempt": 1,
+      "started_at": "2026-09-14T15:07:24Z",
+      "finished_at": "2026-09-14T15:07:24Z",
+      "inputs": [
+        "units.json"
+      ],
+      "outputs": [
+        "context/files/consumers.json",
+        "context/functions/u-unsafe.json",
+        "context/functions/u-guarded.json",
+        "context/functions/u-wrong-guard.json",
+        "context/functions/u-reassigned.json"
+      ],
+      "errors": []
+    },
+    {
+      "name": "dispatch",
+      "status": "completed",
+      "attempt": 1,
+      "started_at": "2026-09-14T15:07:24Z",
+      "finished_at": "2026-09-14T15:07:24Z",
+      "inputs": [
+        "units.json",
+        "context/queries/q08.json"
+      ],
+      "outputs": [
+        "dispatch/plan.json"
+      ],
+      "errors": []
+    },
+    {
+      "name": "review-execute",
+      "status": "completed",
+      "attempt": 1,
+      "started_at": "2026-09-14T15:07:24Z",
+      "finished_at": "2026-09-14T15:08:40Z",
+      "inputs": [
+        "dispatch/plan.json"
+      ],
+      "outputs": [
+        "reviews/cwe-476.json",
+        "findings/raw/f1.json",
+        "findings/raw/f3.json",
+        "findings/raw/f4.json"
+      ],
+      "errors": []
+    },
+    {
+      "name": "post-process",
+      "status": "completed",
+      "attempt": 1,
+      "started_at": "2026-09-14T15:08:40Z",
+      "finished_at": "2026-09-14T15:11:54Z",
+      "inputs": [
+        "reviews/cwe-476.json"
+      ],
+      "outputs": [
+        "output/findings.json",
+        "output/review.sarif"
+      ],
+      "errors": []
+    }
+  ]
+}

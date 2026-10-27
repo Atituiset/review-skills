@@ -1,0 +1,55 @@
+{
+  "schema_version": "0.2.0",
+  "session_id": "review-missing-definition-v02",
+  "skill": "cwe-476-null-pointer",
+  "status": "partial",
+  "scenarios": [
+    {
+      "id": "s-external",
+      "unit_id": "u-external",
+      "pointer": "p",
+      "sink": {
+        "path": "consumer.cpp",
+        "start_line": 5,
+        "end_line": 5
+      },
+      "state": "unresolved",
+      "evidence": [
+        {
+          "query_id": "q01",
+          "fact_id": "prototype",
+          "role": "contract"
+        }
+      ],
+      "summary": "The pointer-producing function has no available definition or non-null contract. Neither a null-return path nor a valid non-null invariant is established.",
+      "missing": [
+        "External implementation or documented return contract."
+      ],
+      "next_queries": [
+        {
+          "schema_version": "0.2.0",
+          "id": "q02",
+          "operation": "find_definition",
+          "scope": {
+            "paths": [],
+            "symbol": "external_lookup"
+          },
+          "limit": 1000,
+          "purpose": "After the external source/contract is supplied, resolve this return behavior."
+        }
+      ],
+      "finding_id": null
+    }
+  ],
+  "findings": [],
+  "query_refs": [
+    "q01"
+  ],
+  "errors": [
+    {
+      "code": "missing_dependency",
+      "message": "Codegraph returned []; repository identifier search found only an extern declaration and call. No definition or return contract is present.",
+      "retryable": true
+    }
+  ]
+}

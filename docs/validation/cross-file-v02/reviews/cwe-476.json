@@ -1,0 +1,305 @@
+{
+  "schema_version": "0.2.0",
+  "session_id": "review-cross-file-v02",
+  "skill": "cwe-476-null-pointer",
+  "status": "completed",
+  "scenarios": [
+    {
+      "id": "s1",
+      "unit_id": "u-unsafe",
+      "pointer": "p",
+      "sink": {
+        "path": "consumers.cpp",
+        "start_line": 4,
+        "end_line": 4
+      },
+      "state": "confirmed",
+      "evidence": [
+        {
+          "query_id": "q01",
+          "fact_id": "lookup-body",
+          "role": "callee_behavior"
+        },
+        {
+          "query_id": "q04",
+          "fact_id": "init-p",
+          "role": "assignment"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-unsafe",
+          "role": "control_flow"
+        },
+        {
+          "query_id": "q08",
+          "fact_id": "sink-4",
+          "role": "dereference"
+        }
+      ],
+      "summary": "available=false is passed unchanged to review_lookup, whose false branch returns nullptr. The same p is dereferenced on the next statement with no intervening guard or write.",
+      "missing": [],
+      "next_queries": [],
+      "finding_id": "f1"
+    },
+    {
+      "id": "s2",
+      "unit_id": "u-guarded",
+      "pointer": "p",
+      "sink": {
+        "path": "consumers.cpp",
+        "start_line": 9,
+        "end_line": 9
+      },
+      "state": "excluded",
+      "evidence": [
+        {
+          "query_id": "q01",
+          "fact_id": "lookup-body",
+          "role": "callee_behavior"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-guarded",
+          "role": "control_flow"
+        },
+        {
+          "query_id": "q06",
+          "fact_id": "guard-8",
+          "role": "guard"
+        },
+        {
+          "query_id": "q08",
+          "fact_id": "sink-9",
+          "role": "dereference"
+        }
+      ],
+      "summary": "When lookup returns nullptr, if (!p) returns before the dereference. On the remaining path p still holds the same non-null return value.",
+      "missing": [],
+      "next_queries": [],
+      "finding_id": null
+    },
+    {
+      "id": "s3",
+      "unit_id": "u-wrong-guard",
+      "pointer": "p",
+      "sink": {
+        "path": "consumers.cpp",
+        "start_line": 16,
+        "end_line": 16
+      },
+      "state": "confirmed",
+      "evidence": [
+        {
+          "query_id": "q01",
+          "fact_id": "lookup-body",
+          "role": "callee_behavior"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-wrong-guard",
+          "role": "control_flow"
+        },
+        {
+          "query_id": "q06",
+          "fact_id": "guard-15",
+          "role": "guard"
+        },
+        {
+          "query_id": "q08",
+          "fact_id": "sink-16",
+          "role": "dereference"
+        }
+      ],
+      "summary": "available=false makes p null. q points to the distinct local object other, so if (!q) does not return and does not validate p; p->value remains reachable.",
+      "missing": [],
+      "next_queries": [],
+      "finding_id": "f3"
+    },
+    {
+      "id": "s4",
+      "unit_id": "u-reassigned",
+      "pointer": "p",
+      "sink": {
+        "path": "consumers.cpp",
+        "start_line": 22,
+        "end_line": 22
+      },
+      "state": "confirmed",
+      "evidence": [
+        {
+          "query_id": "q01",
+          "fact_id": "lookup-body",
+          "role": "callee_behavior"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-reassigned",
+          "role": "assignment"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-reassigned",
+          "role": "control_flow"
+        },
+        {
+          "query_id": "q06",
+          "fact_id": "guard-20",
+          "role": "guard"
+        },
+        {
+          "query_id": "q08",
+          "fact_id": "sink-22",
+          "role": "dereference"
+        }
+      ],
+      "summary": "With available=true the first lookup passes the guard. The subsequent review_lookup(false) unconditionally returns nullptr and overwrites p before p->value.",
+      "missing": [],
+      "next_queries": [],
+      "finding_id": "f4"
+    }
+  ],
+  "findings": [
+    {
+      "schema_version": "0.2.0",
+      "id": "f1",
+      "rule_id": "CWE-476",
+      "title": "Dereference of a nullable lookup result",
+      "severity": "high",
+      "confidence": 0.99,
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 4,
+        "end_line": 4
+      },
+      "claim": "Dereference of a nullable lookup result: available=false reaches p->value with p equal to nullptr.",
+      "evidence": [
+        {
+          "query_id": "q01",
+          "fact_id": "lookup-body",
+          "role": "callee_behavior"
+        },
+        {
+          "query_id": "q04",
+          "fact_id": "init-p",
+          "role": "assignment"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-unsafe",
+          "role": "control_flow"
+        },
+        {
+          "query_id": "q08",
+          "fact_id": "sink-4",
+          "role": "dereference"
+        }
+      ],
+      "reasoning_summary": "available=false is passed unchanged to review_lookup, whose false branch returns nullptr. The same p is dereferenced on the next statement with no intervening guard or write.",
+      "suggestion": "Check p immediately after lookup or return a non-null result with a documented invariant.",
+      "context_refs": [
+        "context/functions/u-unsafe.json",
+        "context/queries/q01.json"
+      ]
+    },
+    {
+      "schema_version": "0.2.0",
+      "id": "f3",
+      "rule_id": "CWE-476",
+      "title": "Guard checks a different pointer",
+      "severity": "high",
+      "confidence": 0.99,
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 16,
+        "end_line": 16
+      },
+      "claim": "Guard checks a different pointer: available=false reaches p->value with p equal to nullptr.",
+      "evidence": [
+        {
+          "query_id": "q01",
+          "fact_id": "lookup-body",
+          "role": "callee_behavior"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-wrong-guard",
+          "role": "control_flow"
+        },
+        {
+          "query_id": "q06",
+          "fact_id": "guard-15",
+          "role": "guard"
+        },
+        {
+          "query_id": "q08",
+          "fact_id": "sink-16",
+          "role": "dereference"
+        }
+      ],
+      "reasoning_summary": "available=false makes p null. q points to the distinct local object other, so if (!q) does not return and does not validate p; p->value remains reachable.",
+      "suggestion": "Check p before accessing its value; checking q does not constrain p.",
+      "context_refs": [
+        "context/functions/u-wrong-guard.json",
+        "context/queries/q01.json"
+      ]
+    },
+    {
+      "schema_version": "0.2.0",
+      "id": "f4",
+      "rule_id": "CWE-476",
+      "title": "Reassignment invalidates the earlier null check",
+      "severity": "high",
+      "confidence": 0.99,
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 22,
+        "end_line": 22
+      },
+      "claim": "Reassignment invalidates the earlier null check: available=true reaches a null dereference after the second lookup.",
+      "evidence": [
+        {
+          "query_id": "q01",
+          "fact_id": "lookup-body",
+          "role": "callee_behavior"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-reassigned",
+          "role": "assignment"
+        },
+        {
+          "query_id": "q02",
+          "fact_id": "caller-reassigned",
+          "role": "control_flow"
+        },
+        {
+          "query_id": "q06",
+          "fact_id": "guard-20",
+          "role": "guard"
+        },
+        {
+          "query_id": "q08",
+          "fact_id": "sink-22",
+          "role": "dereference"
+        }
+      ],
+      "reasoning_summary": "With available=true the first lookup passes the guard. The subsequent review_lookup(false) unconditionally returns nullptr and overwrites p before p->value.",
+      "suggestion": "Validate the new lookup result after reassignment, or avoid overwriting the checked pointer.",
+      "context_refs": [
+        "context/functions/u-reassigned.json",
+        "context/queries/q01.json"
+      ]
+    }
+  ],
+  "query_refs": [
+    "q01",
+    "q02",
+    "q03",
+    "q04",
+    "q05",
+    "q06",
+    "q07",
+    "q08"
+  ],
+  "errors": []
+}

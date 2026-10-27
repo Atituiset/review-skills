@@ -1,0 +1,9 @@
+**ReviewObject** (struct)
+
+**Location:** provider.h:2
+
+```c
+2	struct ReviewObject { int value; };
+```
+**Trail — codegraph_node any of these to follow it (no Read needed)**
+**Called by ←** review_wrong_guard (consumers.cpp:11), review_lookup (provider.cpp:2)

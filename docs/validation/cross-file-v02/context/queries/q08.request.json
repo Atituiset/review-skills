@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q08",
+  "operation": "find_pattern",
+  "scope": {
+    "paths": [
+      "consumers.cpp"
+    ]
+  },
+  "pattern": {
+    "kind": "dereference"
+  },
+  "purpose": "Locate actual pointer-member dereferences for dispatch.",
+  "limit": 1000
+}

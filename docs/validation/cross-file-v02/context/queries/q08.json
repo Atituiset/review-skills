@@ -1,0 +1,105 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q08",
+  "request": {
+    "schema_version": "0.2.0",
+    "id": "q08",
+    "operation": "find_pattern",
+    "scope": {
+      "paths": [
+        "consumers.cpp"
+      ]
+    },
+    "pattern": {
+      "kind": "dereference"
+    },
+    "purpose": "Locate actual pointer-member dereferences for dispatch.",
+    "limit": 1000
+  },
+  "status": "complete",
+  "facts": [
+    {
+      "id": "sink-4",
+      "kind": "dereference",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 4,
+        "end_line": 4
+      },
+      "content": "    return p->value;",
+      "precision": "syntax-observation",
+      "raw_ref": "context/queries/q06.raw.txt"
+    },
+    {
+      "id": "sink-9",
+      "kind": "dereference",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 9,
+        "end_line": 9
+      },
+      "content": "    return p->value;",
+      "precision": "syntax-observation",
+      "raw_ref": "context/queries/q06.raw.txt"
+    },
+    {
+      "id": "sink-16",
+      "kind": "dereference",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 16,
+        "end_line": 16
+      },
+      "content": "    return p->value;",
+      "precision": "syntax-observation",
+      "raw_ref": "context/queries/q06.raw.txt"
+    },
+    {
+      "id": "sink-22",
+      "kind": "dereference",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 22,
+        "end_line": 22
+      },
+      "content": "    return p->value;",
+      "precision": "syntax-observation",
+      "raw_ref": "context/queries/q06.raw.txt"
+    }
+  ],
+  "truncated": false,
+  "coverage": {
+    "scope": "Complete three-file fixture view; exact inspected source, best-effort symbol relationships.",
+    "exhaustive": false,
+    "limitations": [
+      "Tree-sitter and source inspection do not establish general C++ dataflow completeness."
+    ]
+  },
+  "dependencies": [
+    {
+      "path": "consumers.cpp",
+      "sha256": "5f8a34e2ffef07d1a9b305a711d6716870e984efbab5fdfe7223a85f8e30a3b9",
+      "snapshot_path": "repository-view/consumers.cpp"
+    },
+    {
+      "path": "provider.cpp",
+      "sha256": "dc548751653186ca76d519632f4e5a77995fed642a96bef69c53309ac564fa4d",
+      "snapshot_path": "repository-view/provider.cpp"
+    },
+    {
+      "path": "provider.h",
+      "sha256": "417788a0597f574897d68ced2e9b15acdb0f6c485e09bb7a34a7ad98b191ed77",
+      "snapshot_path": "repository-view/provider.h"
+    }
+  ],
+  "provenance": {
+    "backend": "source inspection",
+    "tool_version": "host",
+    "created_at": "2026-09-14T15:07:24Z",
+    "raw_refs": [
+      "context/queries/q06.raw.txt"
+    ],
+    "method": "Host agent inspected previously captured raw tool output and exact snapshot source; no adapter program."
+  },
+  "errors": []
+}

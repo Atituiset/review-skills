@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q06",
+  "operation": "find_pattern",
+  "scope": {
+    "paths": [
+      "consumers.cpp"
+    ]
+  },
+  "pattern": {
+    "kind": "null_guard"
+  },
+  "purpose": "Capture guard syntax without deciding which pointer value reaches a sink.",
+  "limit": 1000
+}

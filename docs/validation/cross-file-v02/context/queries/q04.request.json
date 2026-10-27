@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q04",
+  "operation": "find_assignments",
+  "scope": {
+    "paths": [
+      "consumers.cpp"
+    ],
+    "symbol": "p",
+    "within": {
+      "path": "consumers.cpp",
+      "start_line": 2,
+      "end_line": 5,
+      "symbol": "review_unsafe"
+    }
+  },
+  "purpose": "Capture the initialization of p and all writes visible in review_unsafe.",
+  "limit": 1000
+}

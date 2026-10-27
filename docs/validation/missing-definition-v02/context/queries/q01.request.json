@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q01",
+  "operation": "find_definition",
+  "scope": {
+    "paths": [],
+    "symbol": "external_lookup"
+  },
+  "limit": 1000,
+  "purpose": "Determine the return behavior of the external pointer-producing function."
+}

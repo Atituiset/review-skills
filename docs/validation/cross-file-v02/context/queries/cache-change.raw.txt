@@ -1,0 +1,14 @@
+**review_lookup** (function)
+
+**Location:** provider.cpp:2
+
+```cpp
+2	ReviewObject* review_lookup(bool available) {
+3	    static ReviewObject object{7};
+4	    if (!available) return &object;
+5	    return &object;
+6	}
+```
+**Trail — codegraph_node any of these to follow it (no Read needed)**
+**Calls →** ReviewObject (provider.h:2)
+**Called by ←** review_unsafe (consumers.cpp:2), review_guarded (consumers.cpp:6), review_wrong_guard (consumers.cpp:11), review_reassigned (consumers.cpp:18)

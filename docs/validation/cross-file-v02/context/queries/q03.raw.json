@@ -1,0 +1,11 @@
+{
+  "symbol": "review_unsafe",
+  "callees": [
+    {
+      "name": "review_lookup",
+      "kind": "function",
+      "filePath": "provider.cpp",
+      "startLine": 2
+    }
+  ]
+}

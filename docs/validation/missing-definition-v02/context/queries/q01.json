@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q01",
+  "request": {
+    "schema_version": "0.2.0",
+    "id": "q01",
+    "operation": "find_definition",
+    "scope": {
+      "paths": [],
+      "symbol": "external_lookup"
+    },
+    "limit": 1000,
+    "purpose": "Determine the return behavior of the external pointer-producing function."
+  },
+  "status": "partial",
+  "facts": [
+    {
+      "id": "prototype",
+      "kind": "declaration",
+      "location": {
+        "path": "consumer.cpp",
+        "start_line": 2,
+        "end_line": 2
+      },
+      "content": "extern ExternalObject* external_lookup();",
+      "precision": "exact-source",
+      "raw_ref": "context/queries/q01.fallback.txt"
+    }
+  ],
+  "truncated": false,
+  "coverage": {
+    "scope": "Entire one-file fixture including source fallback after an empty graph lookup.",
+    "exhaustive": false,
+    "limitations": [
+      "External implementation/contract not supplied."
+    ]
+  },
+  "dependencies": [
+    {
+      "path": "consumer.cpp",
+      "sha256": "3730f28c727ae83d39bf83b0969ba42d44bcb8b68e7dc0d81151f5bb9369b225",
+      "snapshot_path": "repository-view/consumer.cpp"
+    }
+  ],
+  "provenance": {
+    "backend": "codegraph + rg + source inspection",
+    "tool_version": "Codegraph 1.6.0; rg 15.2.0",
+    "created_at": "2026-09-14T15:11:54Z",
+    "raw_refs": [
+      "context/queries/q01.raw.json",
+      "context/queries/q01.fallback.txt"
+    ],
+    "method": "Agent examined empty graph result and declaration/call-only fallback."
+  },
+  "errors": [
+    {
+      "code": "missing_dependency",
+      "message": "Codegraph returned []; repository identifier search found only an extern declaration and call. No definition or return contract is present.",
+      "retryable": true
+    }
+  ]
+}

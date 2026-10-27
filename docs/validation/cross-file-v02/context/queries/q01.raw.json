@@ -1,0 +1,24 @@
+[
+  {
+    "node": {
+      "id": "function:2f435cd74031c0cff754cb258f0bcdde",
+      "kind": "function",
+      "name": "review_lookup",
+      "qualifiedName": "review_lookup",
+      "filePath": "provider.cpp",
+      "language": "cpp",
+      "startLine": 2,
+      "endLine": 6,
+      "startColumn": 0,
+      "endColumn": 1,
+      "visibility": null,
+      "isExported": false,
+      "isAsync": false,
+      "isStatic": false,
+      "isAbstract": false,
+      "returnType": "ReviewObject",
+      "updatedAt": 1789398183609
+    },
+    "score": 94.10183420964442
+  }
+]

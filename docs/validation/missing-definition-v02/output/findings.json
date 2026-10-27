@@ -1,0 +1,43 @@
+{
+  "schema_version": "0.2.0",
+  "session_id": "review-missing-definition-v02",
+  "status": "partial",
+  "coverage": {
+    "target_ref": "target.json",
+    "reviewed_units": [
+      "u-external"
+    ],
+    "skipped_units": [],
+    "scenario_counts": {
+      "confirmed": 0,
+      "excluded": 0,
+      "unresolved": 1
+    },
+    "limitations": [
+      "Isolated rule/error-contract exercise; not a complete five-stage run.",
+      "Missing external return implementation after graph and source fallback."
+    ]
+  },
+  "findings": [],
+  "review_refs": [
+    "reviews/cwe-476.json"
+  ],
+  "errors": [
+    {
+      "code": "missing_dependency",
+      "message": "Codegraph returned []; repository identifier search found only an extern declaration and call. No definition or return contract is present.",
+      "retryable": true
+    }
+  ],
+  "validation": {
+    "mode": "agent-inspection",
+    "checks": [
+      "Empty graph result preserved.",
+      "Fallback records declaration and invocation, not a definition.",
+      "Unknown nullability produces no finding and a concrete missing-evidence question."
+    ],
+    "limitations": [
+      "No independent agent or automatic schema validation."
+    ]
+  }
+}

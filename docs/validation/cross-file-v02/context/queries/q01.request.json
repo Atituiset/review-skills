@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q01",
+  "operation": "find_definition",
+  "scope": {
+    "paths": [],
+    "symbol": "review_lookup"
+  },
+  "purpose": "Locate the actual return implementation, not merely a declaration.",
+  "limit": 1000
+}

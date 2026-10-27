@@ -1,0 +1,57 @@
+{
+  "schema_version": "0.2.0",
+  "units": [
+    {
+      "id": "u-unsafe",
+      "type": "function",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 2,
+        "end_line": 5,
+        "symbol": "review_unsafe"
+      },
+      "changed_ranges": [],
+      "status": "reviewed",
+      "context_ref": "context/functions/u-unsafe.json"
+    },
+    {
+      "id": "u-guarded",
+      "type": "function",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 6,
+        "end_line": 10,
+        "symbol": "review_guarded"
+      },
+      "changed_ranges": [],
+      "status": "reviewed",
+      "context_ref": "context/functions/u-guarded.json"
+    },
+    {
+      "id": "u-wrong-guard",
+      "type": "function",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 11,
+        "end_line": 17,
+        "symbol": "review_wrong_guard"
+      },
+      "changed_ranges": [],
+      "status": "reviewed",
+      "context_ref": "context/functions/u-wrong-guard.json"
+    },
+    {
+      "id": "u-reassigned",
+      "type": "function",
+      "location": {
+        "path": "consumers.cpp",
+        "start_line": 18,
+        "end_line": 23,
+        "symbol": "review_reassigned"
+      },
+      "changed_ranges": [],
+      "status": "reviewed",
+      "context_ref": "context/functions/u-reassigned.json"
+    }
+  ]
+}

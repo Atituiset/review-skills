@@ -1,0 +1,12 @@
+**review_unsafe** (function)
+
+**Location:** consumers.cpp:2
+
+```cpp
+2	int review_unsafe(bool available) {
+3	    ReviewObject* p = review_lookup(available);
+4	    return p->value;
+5	}
+```
+**Trail — codegraph_node any of these to follow it (no Read needed)**
+**Calls →** review_lookup (provider.cpp:2)

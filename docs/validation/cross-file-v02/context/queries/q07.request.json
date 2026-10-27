@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.2.0",
+  "id": "q07",
+  "operation": "find_related_symbols",
+  "scope": {
+    "paths": [],
+    "symbol": "ReviewObject"
+  },
+  "purpose": "Establish the pointee declaration and lookup prototype.",
+  "limit": 1000
+}

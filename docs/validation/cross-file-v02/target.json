@@ -1,0 +1,8 @@
+{
+  "schema_version": "0.2.0",
+  "type": "file",
+  "repository": "repository-view",
+  "paths": [
+    "consumers.cpp"
+  ]
+}
